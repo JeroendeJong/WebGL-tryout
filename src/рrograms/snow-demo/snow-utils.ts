@@ -25,13 +25,13 @@ export function prepareSnow(): SnowFlake[] {
 export function makeRandomSnowFlake(): SnowFlake {
   return {
     x: random(0, window.innerWidth),
-    y: random(-500, 0),
+    y: random(-500, 0), // start an arbitrary amount above the window
     velocity: {
-      x: random(-1, 1), 
-      y: random(1, 3)
+      x: random(-0.5, 0.5), 
+      y: random(0.5, 1.0)
     },
     size: random(1, 10), 
-    alpha: random(0.1, 0.9)
+    alpha: random(0.1, 0.5)
   }
 }
 

@@ -1,5 +1,5 @@
-import { ProgramDemoType, makeGameLoop } from "./main";
+import { ProgramDemoType, makeCombinedGameLoop } from "./main";
 
-
-
-makeGameLoop(ProgramDemoType.SNOW_FALL);
+makeCombinedGameLoop([
+  ProgramDemoType.XMAS_3D
+]);

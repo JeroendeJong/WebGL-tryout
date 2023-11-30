@@ -1,6 +1,6 @@
 import { mat4 } from "gl-matrix";
-import { makeChristmasTreeShapeBuffer } from "../shapes";
-import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../utils";
+import { make2dChristmasTreeShapeBuffer } from "../shapes/buffer-shapes";
+import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../webgl/utils";
 import { xyz } from "../math-utils";
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
@@ -35,7 +35,7 @@ export const FRAGMENT_SHADER_SOURCE_CODE = glsl`#version 300 es
 `;
 
 const trees = [
-  { translate: xyz(0, 0, 0), scale: xyz(0.6, 0.6, 0)  },
+  { world: getWorldMatrix(xyz(0, 0, 0), xyz(0.6, 0.6, 0))  },
 ]
 
 export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
@@ -44,16 +44,11 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   const GL_vertexPosition = gl.getAttribLocation(program, 'vertexPosition');
   const GL_vertexColor = gl.getAttribLocation(program, 'vertexColor');
 
-  // how the model is transform from model into world space
   const GL_worldMatrix = gl.getUniformLocation(program, 'mWorld');
-
-  // how the world is positioned in relation to the camera?
   const GL_viewMatrix = gl.getUniformLocation(program, 'mView');
-
-  // how the camera view is transformed from 3d into 2d.
   const GL_projectionMatrix = gl.getUniformLocation(program, 'mProjection');
   
-  const tree = makeChristmasTreeShapeBuffer()
+  const tree = make2dChristmasTreeShapeBuffer()
   const vertexBuffer = createStaticVertexBuffer(gl, tree.buffer);
   const vertexArray = createVAOForXYZ_RGBBuffer(gl, vertexBuffer, GL_vertexPosition, GL_vertexColor);
 
@@ -70,20 +65,22 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     gl.useProgram(program);
 
     trees.forEach(t => {
-      const world = withArray(mat4.identity)
-      mat4.translate(world, world, t.translate)
-      mat4.scale(world, world, t.scale)
-
-      gl.uniformMatrix4fv(GL_worldMatrix, false, world)
+      gl.uniformMatrix4fv(GL_worldMatrix, false, t.world)
       gl.uniformMatrix4fv(GL_viewMatrix, false, view)
       gl.uniformMatrix4fv(GL_projectionMatrix, false, proj)
       gl.bindVertexArray(vertexArray);
       gl.drawArrays(gl.TRIANGLES, 0, tree.numberOfcomponents);
     })
-
-    requestAnimationFrame(loop)
   }
 }
+
+function getWorldMatrix(translate: vector3, scale: vector3) {
+  const world = withArray(mat4.identity)
+  mat4.translate(world, world, translate)
+  mat4.scale(world, world, scale)
+  return world
+}
+
 
 export default {
   VERTEX_SHADER_SOURCE_CODE,

@@ -1,6 +1,6 @@
 import { mat4 } from "gl-matrix";
-import { makeTriangleBuffer } from "../shapes";
-import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../utils";
+import { makeTriangleBuffer } from "../shapes/buffer-shapes";
+import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../webgl/utils";
 
 export const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;
@@ -79,8 +79,6 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
 
       t.current = (t.current + 1) % 360;
     })
-
-    requestAnimationFrame(loop)
   }
 }
 

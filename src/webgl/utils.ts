@@ -1,6 +1,12 @@
 // STUB for syntax highlight
 export const glsl = (x: any) => x;
 
+/**
+ * Assumes canvas HTML element has ID canvas.
+ * @param vCode vertex source code
+ * @param fCode fragment source code
+ * @returns gl and WebGLProgram Instance
+ */
 export function initGL(vCode: string, fCode: string): WebGLInit {
   const canvas = document.getElementById('canvas')
   if (!canvas) throw new Error('no Canvas Element found')
@@ -72,15 +78,8 @@ export function createProgram(
 }
 
 /**
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * Given any data array, creates a buffer reference in WebGL land
  */
-
 export function createStaticVertexBuffer(gl: WebGL2RenderingContext, data: ArrayBuffer): WebGLBuffer {
   const buffer = gl.createBuffer();
   if (!buffer) {
@@ -94,6 +93,15 @@ export function createStaticVertexBuffer(gl: WebGL2RenderingContext, data: Array
   return buffer;
 }
 
+/**
+ * makes an assumption that every item the current data in the buffer consists of XYZRGB values. 
+ * So per entity it expects 6 items. Use this function if your colour values are embedded inside the data buffer.
+ * @param gl 
+ * @param buffer 
+ * @param positionAttribute 
+ * @param colorAttribute 
+ * @returns a vertex array instance (VAO) in WebGL land
+ */
 export function createVAOForXYZ_RGBBuffer(
   gl: WebGL2RenderingContext, 
   buffer: WebGLBuffer,
@@ -122,6 +130,15 @@ export function createVAOForXYZ_RGBBuffer(
   }
 }
 
+/**
+ * makes an assumption that every item the current data in the buffer consists of {length} length. 
+ * Does not make any assumption about colour being present.
+ * @param gl 
+ * @param buffer 
+ * @param length 
+ * @param positionAttribute 
+ * @returns a vertex array instance (VAO) in WebGL land
+ */
 export function createVAOForBufferWithLength(
   gl: WebGL2RenderingContext, 
   buffer: WebGLBuffer,

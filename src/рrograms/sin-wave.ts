@@ -1,5 +1,5 @@
-import { make2DSquareBuffer } from "../shapes";
-import { createStaticVertexBuffer, createVAOForBufferWithLength, glsl } from "../utils";
+import { make2DSquareBuffer } from "../shapes/buffer-shapes";
+import { createStaticVertexBuffer, createVAOForBufferWithLength, glsl } from "../webgl/utils";
 
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
@@ -75,7 +75,6 @@ function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     gl.drawArrays(gl.TRIANGLES, 0, square.numberOfcomponents);
 
     time += 0.005;
-    requestAnimationFrame(loop)
   }
 }
 

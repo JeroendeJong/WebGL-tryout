@@ -1,5 +1,5 @@
 import { mat3 } from "gl-matrix";
-import { createStaticVertexBuffer, createVAOForBufferWithLength, glsl, withArray } from "../utils";
+import { createStaticVertexBuffer, createVAOForBufferWithLength, glsl, withArray } from "../webgl/utils";
 import { prepareSnow, snowFlakeToBufferData, updateSnow } from "./snow-demo/snow-utils";
 
 export const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
@@ -51,12 +51,13 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    gl.clearColor(0.08, 0.08, 0.08, 1.0);
+    // gl.clearColor(0.08, 0.08, 0.08, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.useProgram(program);
 
+    // ensure that the alpha of the snow auto blends with the backdrop
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     
@@ -73,8 +74,6 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     gl.uniformMatrix3fv(GL_projectionMatrix, false, makeProjectMatrix())
     gl.bindVertexArray(vertexArray);
     gl.drawArrays(gl.POINTS, 0, snow.length);
-
-    requestAnimationFrame(loop)
 
     function makeProjectMatrix() {
       const proj = withArray(mat3.identity) 

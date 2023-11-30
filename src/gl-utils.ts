@@ -6,6 +6,6 @@ export function shapeToBuffer(...args: PrimativeShape[]): BufferInformation {
 
   return {
     numberOfcomponents,
-    buffer: Float32Array.from(shapes as unknown as number[])
+    buffer: Float32Array.from(shapes)
   }
 }
