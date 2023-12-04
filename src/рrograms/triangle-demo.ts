@@ -1,6 +1,6 @@
 import { mat4 } from "gl-matrix";
 import { makeTriangleBuffer } from "../shapes/buffer-shapes";
-import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../webgl/utils";
+import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../general/core-utils";
 
 export const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;

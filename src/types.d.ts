@@ -12,19 +12,20 @@ type DemoProgram = {
   makeLoop: WebGLLoopFunction
 }
 
-type ShapeInformation = {
-  numberOfcomponents: number
-  shape: []
-}
-
 type PrimativeShape = {
   numberOfcomponents: number,
   shape: number[][]
+
+  // in the future normals for lightings, and index for cleaner and less GB in shape sizes :-)
+  normals?: never,
+  indexes?: never
 }
 
-type BufferInformation = {
+type BufferedShape = {
   numberOfcomponents: number,
-  buffer: Float32Array
+  buffer: Float32Array,
+  cull: FaceCull,
+  type: DrawType
 }
 
 type ShapeOptions = {
@@ -37,6 +38,10 @@ type ShapeOptions = {
     },
   },
   color?: vector3
+}
+
+type BoxShapeOptions = {
+  // none?
 }
 
 type CircleOptions = {
@@ -53,3 +58,5 @@ type CircleShapeOptions = ShapeOptions & {
 type ConeShapeOptions = ShapeOptions & {
   cone?: CircleOptions & {length?: number}
 }
+
+type CylinderShapeOptions = ConeShapeOptions

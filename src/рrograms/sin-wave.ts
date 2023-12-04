@@ -1,5 +1,5 @@
 import { make2DSquareBuffer } from "../shapes/buffer-shapes";
-import { createStaticVertexBuffer, createVAOForBufferWithLength, glsl } from "../webgl/utils";
+import { createStaticVertexBuffer, createVAOForBufferWithLength, glsl } from "../general/core-utils";
 
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es

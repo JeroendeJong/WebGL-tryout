@@ -1,6 +1,6 @@
-import { makePrimativeCircle, makePrimativeCone, makePrimativeRectangle, makePrimativeTriangle } from "./primative-shape";
-import { shapeToBuffer } from "../gl-utils";
-import { radian, rgb, xyz } from "../math-utils";
+import { DrawType } from ".";
+import { makePrimativeBox, makePrimativeCircle, makePrimativeCone, makePrimativeCylinder, makePrimativeLine, makePrimativeTriangle } from "./primative-shape";
+import { shapeToBuffer } from "./shape-utils";
 
 /**
  * returns the hape with a range -1 to 1
@@ -23,108 +23,45 @@ export function make2DSquareBuffer(): any {
   }
 }
 
-export function makeTriangleBuffer(options: ShapeOptions): BufferInformation {
-  return shapeToBuffer(makePrimativeTriangle(options))
+export function makeBoxBuffer(options: BoxShapeOptions): BufferedShape {
+  return shapeToBuffer({
+    shapes: makePrimativeBox(options),
+    type: DrawType.TRIANGLE
+  })
 }
 
-export function makeCircleBuffer(options: CircleShapeOptions): BufferInformation {
-  return shapeToBuffer(makePrimativeCircle(options))
+export function makeLineBuffer(options: ShapeOptions): BufferedShape {
+  return shapeToBuffer({
+    shapes: makePrimativeLine(options),
+    type: DrawType.LINES
+  })
 }
 
-export function makeConeBuffer(options: ConeShapeOptions): BufferInformation {
-  return shapeToBuffer(makePrimativeCone(options))
+export function makeTriangleBuffer(options: ShapeOptions): BufferedShape {
+  return shapeToBuffer({
+    shapes: makePrimativeTriangle(options),
+    type: DrawType.TRIANGLE
+  })
 }
 
-export function make3dChristmasTreeShapeBuffer(): BufferInformation {
-  return shapeToBuffer(
-    // trunk
-    // makePrimativeRectangle({
-    //   color: rgb(0.3607, 0.1686, 0.1686),
-    //   transform: {
-    //     scale: 1,
-    //     move: xyz(0, 0, 0)
-    //   },
-    // }),
-    // leaves
-    makePrimativeCone({ 
-      color: rgb(0.2078, 0.3451, 0.1608),
-      cone: {
-        segments: 10,
-        length: 1.5
-      },
-      transform: {
-        rotate: {
-          origin: xyz(0,0,0),
-          rotation: xyz(radian(270), 0, 0),
-        },
-        move: xyz(0, 0, -0.5)
-      }
-    }),
-
-    makePrimativeCone({ 
-      color: rgb(0.3373, 0.4902, 0.1882),
-      cone: {
-        segments: 10,
-        length: 1.5
-      },
-      transform: {
-        rotate: {
-          origin: xyz(0,0,0),
-          rotation: xyz(radian(270), 0, 0),
-        },
-        move: xyz(0, 0, 0)
-      }
-    }),
-
-    makePrimativeCone({ 
-      color: rgb(0.5608, 0.6941, 0.3059),
-      cone: {
-        segments: 10,
-        length: 1.5
-      },
-      transform: {
-        rotate: {
-          origin: xyz(0,0,0),
-          rotation: xyz(radian(270), 0, 0),
-        },
-        move: xyz(0, 0, 0.5)
-      }
-    })
-  )
+export function makeCircleBuffer(options: CircleShapeOptions): BufferedShape {
+  return shapeToBuffer({
+    shapes: makePrimativeCircle(options),
+    type: DrawType.TRIANGLE
+  })
 }
 
-export function make2dChristmasTreeShapeBuffer(): BufferInformation {
-  return shapeToBuffer(
-    // trunk
-    makePrimativeRectangle({
-      color: rgb(0.3607, 0.1686, 0.1686),
-      transform: {
-        scale: 0.1,
-        move: xyz(0, -8, 0)
-      },
-    }),
-    // leaves
-    makePrimativeTriangle({ 
-      color: rgb(0.2078, 0.3451, 0.1608),
-      transform: {
-        scale: 0.5,
-        move: xyz(0, -0.5, 0)
-      }
-    }),
-    makePrimativeTriangle({ 
-      color: rgb(0.3373, 0.4902, 0.1882),
-      transform: {
-        scale: 0.4,
-        move: xyz(0, 0, 0)
-      }
-    }),
-    makePrimativeTriangle({ 
-      color: rgb(0.5608, 0.6941, 0.3059),
-      transform: {
-        scale: 0.3,
-        move: xyz(0, 0.6, 0)
-      }
-    }),
-  )
+export function makeConeBuffer(options: ConeShapeOptions): BufferedShape {
+  return shapeToBuffer({
+    shapes: makePrimativeCone(options),
+    type: DrawType.TRIANGLE
+  })
+}
+
+export function makeCylinderBuffer(options: CylinderShapeOptions): BufferedShape {
+  return shapeToBuffer({
+    shapes: makePrimativeCylinder(options),
+    type: DrawType.TRIANGLE
+  })
 }
 

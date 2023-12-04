@@ -1,9 +1,9 @@
-import { initGL } from './webgl/utils';
+import { initGL } from './general/core-utils';
 import TriangleDemo from './рrograms/triangle-demo';
 import SinWave from './рrograms/sin-wave';
-import christmasTree2D from './рrograms/2d-christmas-tree';
-import christmasTree3D from './рrograms/3d-christmas-tree';
-import SnowFall from './рrograms/snow-demo'
+import christmasTree2D from './рrograms/christmas/2d-christmas-tree';
+import christmasTree3D from './рrograms/christmas/3d-christmas-tree';
+import SnowFall from './рrograms/christmas/snow'
 
 export enum ProgramDemoType {
   TRIANGLE,
@@ -18,7 +18,6 @@ const demoDirectory = {
   [ProgramDemoType.SIN_WAVE]: SinWave,
   [ProgramDemoType.XMAS_2D]: christmasTree2D,
   [ProgramDemoType.XMAS_3D]: christmasTree3D,
-
   [ProgramDemoType.SNOW_FALL]: SnowFall,
 }
 

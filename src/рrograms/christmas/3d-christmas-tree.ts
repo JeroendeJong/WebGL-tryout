@@ -1,7 +1,10 @@
 import { mat4 } from "gl-matrix";
-import { make3dChristmasTreeShapeBuffer, makeConeBuffer } from "../shapes/buffer-shapes";
-import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl } from "../webgl/utils";
-import { radian, rgb, xyz } from "../math-utils";
+import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl } from "../../general/core-utils";
+import { radian, rgb, xyz } from "../../math-utils";
+import { make3dChristmasTreeShapeBuffer } from "./shapes";
+import { DrawType, FaceCull } from "../../shapes";
+import { makeAxesLinesBuffer } from "../../general/axes-shape";
+import { makeBoxBuffer } from "../../shapes/buffer-shapes";
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;
@@ -19,6 +22,7 @@ const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
     fragmentColor = vertexColor;
 
     gl_Position = mProjection * mView * mWorld * vec4(vertexPosition, 1.0);
+    gl_PointSize = 15.0;
   }
 `;
 
@@ -44,14 +48,14 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   const GL_viewMatrix = gl.getUniformLocation(program, 'mView');
   const GL_projectionMatrix = gl.getUniformLocation(program, 'mProjection');
   
-  const circle = make3dChristmasTreeShapeBuffer()
-
-  // const circle = makeTriangleBuffer({
-  //   color: rgb(0.3607, 0.1686, 0.1686),
-  // })
-
-  const vertexBuffer = createStaticVertexBuffer(gl, circle.buffer);
-  const vertexArray = createVAOForXYZ_RGBBuffer(gl, vertexBuffer, GL_vertexPosition, GL_vertexColor);
+  const shape = [
+    ...make3dChristmasTreeShapeBuffer(),
+    makeAxesLinesBuffer()
+  ]
+  const VAOs = shape.map(s => {
+    const vertexBuffer = createStaticVertexBuffer(gl, s.buffer);
+    return createVAOForXYZ_RGBBuffer(gl, vertexBuffer, GL_vertexPosition, GL_vertexColor);
+  })
 
   canvas.width = 800;
   canvas.height = 600;
@@ -68,15 +72,34 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.useProgram(program);
 
+    gl.enable(gl.DEPTH_TEST)
 
     angle = performance.now() / 1000 / 6 * 2 * Math.PI;
     const rotationgWorld = makeRotationgWorld(angle)
 
-    gl.uniformMatrix4fv(GL_worldMatrix, false, rotationgWorld)
+    gl.uniformMatrix4fv(GL_worldMatrix, false, world)
     gl.uniformMatrix4fv(GL_viewMatrix, false, view)
     gl.uniformMatrix4fv(GL_projectionMatrix, false, proj)
-    gl.bindVertexArray(vertexArray);
-    gl.drawArrays(gl.TRIANGLES, 0, circle.numberOfcomponents);
+
+    VAOs.forEach((v, i) => {
+      const info = shape[i]
+
+      if (info.cull) {
+        gl.enable(gl.CULL_FACE)
+        if (info.cull === FaceCull.FRONT) gl.cullFace(gl.FRONT)
+        if (info.cull === FaceCull.BACK) gl.cullFace(gl.BACK)
+        if (info.cull === FaceCull.FRONT_AND_BACK) gl.cullFace(gl.FRONT_AND_BACK)
+      } else gl.disable(gl.CULL_FACE)
+
+      gl.bindVertexArray(v);
+
+      if (info.type === DrawType.LINES) gl.drawArrays(gl.LINES, 0, info.numberOfcomponents);
+      else if (info.type === DrawType.TRIANGLE) gl.drawArrays(gl.TRIANGLES, 0, info.numberOfcomponents);
+      else if (info.type === DrawType.POINTS) gl.drawArrays(gl.POINTS, 0, info.numberOfcomponents);
+      else {
+        throw new Error(`unknown drawtype!: ${info.type}`, )
+      }
+    })
   }
 }
 

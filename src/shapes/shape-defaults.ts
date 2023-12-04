@@ -6,3 +6,7 @@ export function makeDefaultCircleOptions(options?: CircleOptions): Required<Circ
   const radius = options?.radius || 1
   return {center, segments, radius}
 }
+
+export function makeDefaultConeOptions(options?: ConeShapeOptions) {
+  // TODO
+}
