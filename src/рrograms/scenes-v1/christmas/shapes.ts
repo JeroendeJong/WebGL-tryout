@@ -1,55 +1,55 @@
-import { rgb, xyz, radian } from "../../math-utils";
-import { DrawType, FaceCull, ShapeInformation } from "../../shapes";
-import { makePrimativeCone, makePrimativeCircle, makePrimativeCylinder, makePrimativeRectangle, makePrimativeTriangle, makePrimativeShape, makePrimativePoint, makePrimativeBox } from "../../shapes/primative-shape";
-import { shapeToBuffer } from "../../shapes/shape-utils";
+import { xyz, rgb, radian } from "../../../math-utils"
+import { ShapeInformation, DrawType, FaceCull } from "../../../shapes"
+import { makePrimativeBox, makePrimativeCone, makePrimativeCircle, makePrimativeCylinder, makePrimativeRectangle, makePrimativeTriangle } from "../../../shapes/primative-shape"
+import { shapeToBuffer } from "../../../shapes/shape-utils"
 
-export function make3dChristmasTreeShapeBuffer(): BufferedShape[] {
+export function make3dChristmasTreeShapeBuffer(generalOptions: ShapeTransformOptions): BufferedShape[] {
   const circleOptions = { segments: 20, length: 1.5 }
 
   const trunk = makeTrunk()
   const circles = makeConeLids()
   const cones = makeCones()
-  const lights = placeLightsOnCones(cones)
+  // const lights = placeLightsOnCones(cones)
 
   return [
     shapeToBuffer(circles), 
     shapeToBuffer(trunk), 
     shapeToBuffer(cones),
-    shapeToBuffer(lights),
+    // shapeToBuffer(lights),
   ]
 
   ///
   ///
   ///
 
-  function placeLightsOnCones(cones: ShapeInformation): ShapeInformation {
-    if (!Array.isArray(cones.shapes)) {
-      throw new Error('W')
-    }
+  // function placeLightsOnCones(cones: ShapeInformation): ShapeInformation {
+  //   if (!Array.isArray(cones.shapes)) {
+  //     throw new Error('W')
+  //   }
 
-    const out = cones.shapes.map(cone => {
-      const shapes: PrimativeShape[] = []
-      // find 5 xyz points
-      for (let i = 0; i < 5; i++) {
-        const randomIndex = Math.floor(Math.random() * cone.shape.length);
-        const s = [...cone.shape[randomIndex]]
-        const point = makePrimativeBox({ 
-          transform: { 
-            scale: 0.1,
-            move: xyz(s[0], s[1], s[2]),
-          },
-          color: rgb(1, 0, 0),
-        })
-        shapes.push(point)
-      }
-      return shapes
-    })
+  //   const out = cones.shapes.map(cone => {
+  //     const shapes: PrimativeShape[] = []
+  //     // find 5 xyz points
+  //     for (let i = 0; i < 5; i++) {
+  //       const randomIndex = Math.floor(Math.random() * cone.shape.length);
+  //       const s = [...cone.shape[randomIndex]]
+  //       const point = makePrimativeBox({ 
+  //         transform: { 
+  //           scale: 0.1,
+  //           move: xyz(s[0], s[1], s[2]),
+  //         },
+  //         color: rgb(1, 0, 0),
+  //       })
+  //       shapes.push(point)
+  //     }
+  //     return shapes
+  //   })
 
-    return {
-      shapes: out.flat(1),
-      type: DrawType.TRIANGLE,
-    }
-  }
+  //   return {
+  //     shapes: out.flat(1),
+  //     type: DrawType.TRIANGLE,
+  //   }
+  // }
 
   function makeCones(): ShapeInformation {
     return {
@@ -57,9 +57,9 @@ export function make3dChristmasTreeShapeBuffer(): BufferedShape[] {
       type: DrawType.TRIANGLE,
       shapes: [
         makePrimativeCone({ 
-        color: rgb(0.2078, 0.3451, 0.1608),
-        cone: {...circleOptions, radius: 1.4},
-        transform: makeTransform(270, xyz(0, -0.5, 0))
+          color: rgb(0.2078, 0.3451, 0.1608),
+          cone: {...circleOptions, radius: 1.4},
+          transform: makeTransform(270, xyz(0, -0.5, 0))
         }),
         makePrimativeCone({ 
           color: rgb(0.3373, 0.4902, 0.1882),

@@ -28,16 +28,18 @@ type BufferedShape = {
   type: DrawType
 }
 
-type ShapeOptions = {
-  transform?: {
-    move?: vector3,
-    scale?: number,
-    rotate?: {
-      origin: vector3,
-      rotation: vector3
-    },
-  },
+type BasicShapeOptions = {
+  transform?: ShapeTransformOptions,
   color?: vector3
+}
+
+type ShapeTransformOptions = {
+  move?: vector3,
+  scale?: number,
+  rotate?: {
+    origin: vector3,
+    rotation: vector3
+  },
 }
 
 type BoxShapeOptions = {
@@ -50,12 +52,12 @@ type CircleOptions = {
   segments?: number
 }
 
-type CircleShapeOptions = ShapeOptions & {
+type CircleShapeOptions = BasicShapeOptions & {
   circle?: CircleOptions
 }
 
 // TODO: TBH a circle is just a cone, sooo... maybe unify them, at some point.
-type ConeShapeOptions = ShapeOptions & {
+type ConeShapeOptions = BasicShapeOptions & {
   cone?: CircleOptions & {length?: number}
 }
 

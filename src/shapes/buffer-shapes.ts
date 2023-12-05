@@ -30,14 +30,14 @@ export function makeBoxBuffer(options: BoxShapeOptions): BufferedShape {
   })
 }
 
-export function makeLineBuffer(options: ShapeOptions): BufferedShape {
+export function makeLineBuffer(options: BasicShapeOptions): BufferedShape {
   return shapeToBuffer({
     shapes: makePrimativeLine(options),
     type: DrawType.LINES
   })
 }
 
-export function makeTriangleBuffer(options: ShapeOptions): BufferedShape {
+export function makeTriangleBuffer(options: BasicShapeOptions): BufferedShape {
   return shapeToBuffer({
     shapes: makePrimativeTriangle(options),
     type: DrawType.TRIANGLE

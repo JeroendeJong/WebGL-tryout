@@ -1,5 +1,5 @@
 import { mat3 } from "gl-matrix";
-import { createStaticVertexBuffer, createVAOForBufferWithLength, glsl, withArray } from "../../general/core-utils";
+import { createStaticVertexBuffer, createVAOForBufferWithLength, glsl, withArray } from "../../../general/core-utils";
 import { prepareSnow, snowFlakeToBufferData, updateSnow } from "./snow-utils";
 
 export const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es

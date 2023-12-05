@@ -1,6 +1,6 @@
 import { mat4 } from "gl-matrix";
-import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../../general/core-utils";
-import { xyz } from "../../math-utils";
+import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../../../general/core-utils";
+import { xyz } from "../../../math-utils";
 import { make2dChristmasTreeShapeBuffer } from "./shapes";
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es

@@ -1,6 +1,6 @@
 import { mat4 } from "gl-matrix";
-import { makeTriangleBuffer } from "../shapes/buffer-shapes";
-import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../general/core-utils";
+import { makeTriangleBuffer } from "../../shapes/buffer-shapes";
+import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../../general/core-utils";
 
 export const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;
@@ -43,7 +43,7 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   const GL_viewMatrix = gl.getUniformLocation(program, 'mView');
   const GL_projectionMatrix = gl.getUniformLocation(program, 'mProjection');
   
-  const triangle = makeTriangleBuffer({ withColor: [0.0274, 0.3372, 0.1] })
+  const triangle = makeTriangleBuffer({ color: [0.0274, 0.3372, 0.1] })
   const vertexBuffer = createStaticVertexBuffer(gl, triangle.buffer);
   const vertexArray = createVAOForXYZ_RGBBuffer(gl, vertexBuffer, GL_vertexPosition, GL_vertexColor);
 

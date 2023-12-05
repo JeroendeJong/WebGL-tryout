@@ -1,10 +1,9 @@
 import { mat4 } from "gl-matrix";
-import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl } from "../../general/core-utils";
-import { radian, rgb, xyz } from "../../math-utils";
+import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl } from "../../../general/core-utils";
+import { radian } from "../../../math-utils";
 import { make3dChristmasTreeShapeBuffer } from "./shapes";
-import { DrawType, FaceCull } from "../../shapes";
-import { makeAxesLinesBuffer } from "../../general/axes-shape";
-import { makeBoxBuffer } from "../../shapes/buffer-shapes";
+import { DrawType, FaceCull } from "../../../shapes";
+import { makeAxesLinesBuffer } from "../../../general/axes-shape";
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;

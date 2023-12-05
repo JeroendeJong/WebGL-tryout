@@ -102,7 +102,7 @@ export function makePrimativeCircle(options: CircleShapeOptions): PrimativeShape
   return makePrimativeShape(circle, options);
 }
 
-export function makePrimativeRectangle(options: ShapeOptions): PrimativeShape {
+export function makePrimativeRectangle(options: BasicShapeOptions): PrimativeShape {
   const rectangle = [
     xyz(-0.5 ,  1, 0),
     xyz(-0.5, -1, 0),
@@ -119,7 +119,7 @@ export function makePrimativeRectangle(options: ShapeOptions): PrimativeShape {
 /**
  * returns the hape with a range -1 to 1
  */
-export function makePrimativeTriangle(options: ShapeOptions): PrimativeShape {
+export function makePrimativeTriangle(options: BasicShapeOptions): PrimativeShape {
   const triangle = [
     xyz(0 ,  1, 0),
     xyz(-1, -1, 0),
@@ -129,7 +129,7 @@ export function makePrimativeTriangle(options: ShapeOptions): PrimativeShape {
   return makePrimativeShape(triangle, options);
 }
 
-export function makePrimativeLine(options: ShapeOptions): PrimativeShape {
+export function makePrimativeLine(options: BasicShapeOptions): PrimativeShape {
   const line = [
     xyz(0, 0, 0),
     xyz(0, 1, 0)
@@ -138,7 +138,7 @@ export function makePrimativeLine(options: ShapeOptions): PrimativeShape {
   return makePrimativeShape(line, options);
 }
 
-export function makePrimativePoint(options: ShapeOptions): PrimativeShape {
+export function makePrimativePoint(options: BasicShapeOptions): PrimativeShape {
   const point = [ xyz(0, 0, 0) ]
   return makePrimativeShape(point, options);
 }
@@ -146,7 +146,7 @@ export function makePrimativePoint(options: ShapeOptions): PrimativeShape {
 /**
  * Interals!
  */
-export function makePrimativeShape(shape: vector3[], options: ShapeOptions): PrimativeShape {
+export function makePrimativeShape(shape: vector3[], options: BasicShapeOptions): PrimativeShape {
   const basicShapes = shape.map(p => {
     const {transform, color} = options
     if (transform) {
