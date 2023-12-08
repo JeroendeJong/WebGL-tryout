@@ -3,7 +3,7 @@ import { ShapeInformation, DrawType, FaceCull } from "../../../shapes"
 import { makePrimativeBox, makePrimativeCone, makePrimativeCircle, makePrimativeCylinder, makePrimativeRectangle, makePrimativeTriangle } from "../../../shapes/primative-shape"
 import { shapeToBuffer } from "../../../shapes/shape-utils"
 
-export function make3dChristmasTreeShapeBuffer(generalOptions: ShapeTransformOptions): BufferedShape[] {
+export function make3dChristmasTreeShapeBuffer(): BufferedShape[] {
   const circleOptions = { segments: 20, length: 1.5 }
 
   const trunk = makeTrunk()

@@ -1,8 +1,9 @@
 type vector3 = import('gl-matrix').vec3
+type vector4 = import('gl-matrix').vec4
 type vector2 = import('gl-matrix').vec2
 
 
-type WebGLLoopFunction = () => void
+type WebGLLoopFunction = (time: number) => void
 
 type WebGLInit = { gl: WebGL2RenderingContext, program: WebGLProgram }
 
@@ -22,15 +23,19 @@ type PrimativeShape = {
 }
 
 type BufferedShape = {
-  numberOfcomponents: number,
-  buffer: Float32Array,
+  buffer: Float32Array
+  information: BufferDrawInformation
+}
+
+type BufferDrawInformation = {
   cull: FaceCull,
-  type: DrawType
+  type: DrawType,
+  numberOfcomponents: number,
 }
 
 type BasicShapeOptions = {
   transform?: ShapeTransformOptions,
-  color?: vector3
+  color: vector3
 }
 
 type ShapeTransformOptions = {

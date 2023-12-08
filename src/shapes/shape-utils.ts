@@ -8,10 +8,12 @@ export function shapeToBuffer(information: ShapeInformation): BufferedShape {
   const numberOfcomponents = input.reduce((v, curr) => curr.numberOfcomponents + v, 0)
   const flattendData = input.map(s => s.shape).flat(2)
   return {
-    numberOfcomponents,
     buffer: Float32Array.from(flattendData),
-    cull,
-    type
+    information: {
+      numberOfcomponents,
+      cull,
+      type
+    }
   }
 }
 

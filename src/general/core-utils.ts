@@ -1,3 +1,5 @@
+import { DrawType, FaceCull } from "../shapes";
+
 // STUB for syntax highlight
 export const glsl = (x: any) => x;
 
@@ -161,8 +163,31 @@ export function createVAOForBufferWithLength(
 }
 
 
-
+/**
+ * @deprecated
+ */
 export function withArray(func: any, args: any = []) {
   const array: any[] = []
   return func(array, ...args)
+}
+
+export function drawVAO(gl: WebGL2RenderingContext, vao: WebGLVertexArrayObject, info: BufferDrawInformation) {
+  if (info.cull) {
+    gl.enable(gl.CULL_FACE)
+    if (info.cull === FaceCull.FRONT) gl.cullFace(gl.FRONT)
+    if (info.cull === FaceCull.BACK) gl.cullFace(gl.BACK)
+    if (info.cull === FaceCull.FRONT_AND_BACK) gl.cullFace(gl.FRONT_AND_BACK)
+  } else gl.disable(gl.CULL_FACE)
+
+  gl.bindVertexArray(vao);
+
+  if (info.type === DrawType.LINES) gl.drawArrays(gl.LINES, 0, info.numberOfcomponents);
+  else if (info.type === DrawType.TRIANGLE) gl.drawArrays(gl.TRIANGLES, 0, info.numberOfcomponents);
+  else if (info.type === DrawType.POINTS) gl.drawArrays(gl.POINTS, 0, info.numberOfcomponents);
+  else {
+    throw new Error(`unknown drawtype!: ${info.type}`, )
+  }
+
+  gl.disable(gl.CULL_FACE);
+  gl.bindVertexArray(null);
 }

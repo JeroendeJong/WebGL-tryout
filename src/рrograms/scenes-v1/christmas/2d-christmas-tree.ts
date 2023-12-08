@@ -69,7 +69,7 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
       gl.uniformMatrix4fv(GL_viewMatrix, false, view)
       gl.uniformMatrix4fv(GL_projectionMatrix, false, proj)
       gl.bindVertexArray(vertexArray);
-      gl.drawArrays(gl.TRIANGLES, 0, tree.numberOfcomponents);
+      gl.drawArrays(gl.TRIANGLES, 0, tree.information.numberOfcomponents);
     })
   }
 }

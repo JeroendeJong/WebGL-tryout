@@ -1,5 +1,5 @@
 import { mat4 } from "gl-matrix";
-import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl } from "../../../general/core-utils";
+import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, drawVAO, glsl } from "../../../general/core-utils";
 import { radian } from "../../../math-utils";
 import { make3dChristmasTreeShapeBuffer } from "./shapes";
 import { DrawType, FaceCull } from "../../../shapes";
@@ -81,23 +81,8 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     gl.uniformMatrix4fv(GL_projectionMatrix, false, proj)
 
     VAOs.forEach((v, i) => {
-      const info = shape[i]
-
-      if (info.cull) {
-        gl.enable(gl.CULL_FACE)
-        if (info.cull === FaceCull.FRONT) gl.cullFace(gl.FRONT)
-        if (info.cull === FaceCull.BACK) gl.cullFace(gl.BACK)
-        if (info.cull === FaceCull.FRONT_AND_BACK) gl.cullFace(gl.FRONT_AND_BACK)
-      } else gl.disable(gl.CULL_FACE)
-
-      gl.bindVertexArray(v);
-
-      if (info.type === DrawType.LINES) gl.drawArrays(gl.LINES, 0, info.numberOfcomponents);
-      else if (info.type === DrawType.TRIANGLE) gl.drawArrays(gl.TRIANGLES, 0, info.numberOfcomponents);
-      else if (info.type === DrawType.POINTS) gl.drawArrays(gl.POINTS, 0, info.numberOfcomponents);
-      else {
-        throw new Error(`unknown drawtype!: ${info.type}`, )
-      }
+      const info = shape[i].information
+      drawVAO(gl, v, info)
     })
   }
 }
