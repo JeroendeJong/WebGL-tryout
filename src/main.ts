@@ -33,10 +33,10 @@ export enum v1ProgramDemoType {
    */
   SNOW_FALL,
 
-  /**
-   * try out of a way in which all demos are put in one gl context, and interactively can be switched between.
-   */
-  SCENE_VIEWER
+  // /**
+  //  * try out of a way in which all demos are put in one gl context, and interactively can be switched between.
+  //  */
+  // SCENE_VIEWER
 }
 
 export enum v2ProgramDemoType {

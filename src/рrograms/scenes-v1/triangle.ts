@@ -1,6 +1,9 @@
 import { mat4 } from "gl-matrix";
-import { makeTriangleBuffer } from "../../shapes/buffer-shapes";
 import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../../general/core-utils";
+import { makeComplexShape, makeVertexShape } from "../../shapes/shape-creation";
+import { rgb } from "../../math-utils";
+import { DrawType } from "../../shapes";
+import { makePrimativeTriangle } from "../../shapes/primative-shapes";
 
 export const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;
@@ -43,8 +46,14 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   const GL_viewMatrix = gl.getUniformLocation(program, 'mView');
   const GL_projectionMatrix = gl.getUniformLocation(program, 'mProjection');
   
-  const triangle = makeTriangleBuffer({ color: [0.0274, 0.3372, 0.1] })
-  const vertexBuffer = createStaticVertexBuffer(gl, triangle.buffer);
+  const primative = makePrimativeTriangle({})
+  const complex = makeComplexShape([
+    {color: rgb(0.0274, 0.3372, 0.2), primative},
+  ], undefined,)
+  const vertex = makeVertexShape(complex, DrawType.TRIANGLE)
+
+
+  const vertexBuffer = createStaticVertexBuffer(gl, vertex.buffer);
   const vertexArray = createVAOForXYZ_RGBBuffer(gl, vertexBuffer, GL_vertexPosition, GL_vertexColor);
 
   const triangles = [
@@ -75,7 +84,7 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
       gl.uniformMatrix4fv(GL_viewMatrix, false, view)
       gl.uniformMatrix4fv(GL_projectionMatrix, false, proj)
       gl.bindVertexArray(vertexArray);
-      gl.drawArrays(gl.TRIANGLES, 0, triangle.information.numberOfcomponents);
+      gl.drawArrays(gl.TRIANGLES, 0, vertex.info.numberOfcomponents);
 
       t.current = (t.current + 1) % 360;
     })

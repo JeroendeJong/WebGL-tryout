@@ -1,9 +1,8 @@
 import { mat4 } from "gl-matrix";
 import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, drawVAO, glsl } from "../../../general/core-utils";
 import { radian } from "../../../math-utils";
-import { make3dChristmasTreeShapeBuffer } from "./shapes";
-import { DrawType, FaceCull } from "../../../shapes";
-import { makeAxesLinesBuffer } from "../../../general/axes-shape";
+import { makeAxesLineVertexShape } from "../../../general/axes-shape";
+import { make3dChristmasTreeVertexShape } from "./shapes";
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;
@@ -48,8 +47,8 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   const GL_projectionMatrix = gl.getUniformLocation(program, 'mProjection');
   
   const shape = [
-    ...make3dChristmasTreeShapeBuffer(),
-    makeAxesLinesBuffer()
+    makeAxesLineVertexShape(),
+    ...make3dChristmasTreeVertexShape(),
   ]
   const VAOs = shape.map(s => {
     const vertexBuffer = createStaticVertexBuffer(gl, s.buffer);
@@ -81,7 +80,7 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     gl.uniformMatrix4fv(GL_projectionMatrix, false, proj)
 
     VAOs.forEach((v, i) => {
-      const info = shape[i].information
+      const info = shape[i].info
       drawVAO(gl, v, info)
     })
   }

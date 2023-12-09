@@ -1,7 +1,7 @@
 import { mat4 } from "gl-matrix";
 import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, glsl, withArray } from "../../../general/core-utils";
 import { xyz } from "../../../math-utils";
-import { make2dChristmasTreeShapeBuffer } from "./shapes";
+import { make2dChristmasTreeShapeBuffer, make2dChristmasTreeVertexShape } from "./shapes";
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;
@@ -48,7 +48,7 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   const GL_viewMatrix = gl.getUniformLocation(program, 'mView');
   const GL_projectionMatrix = gl.getUniformLocation(program, 'mProjection');
   
-  const tree = make2dChristmasTreeShapeBuffer()
+  const tree = make2dChristmasTreeVertexShape()
   const vertexBuffer = createStaticVertexBuffer(gl, tree.buffer);
   const vertexArray = createVAOForXYZ_RGBBuffer(gl, vertexBuffer, GL_vertexPosition, GL_vertexColor);
 
@@ -69,7 +69,7 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
       gl.uniformMatrix4fv(GL_viewMatrix, false, view)
       gl.uniformMatrix4fv(GL_projectionMatrix, false, proj)
       gl.bindVertexArray(vertexArray);
-      gl.drawArrays(gl.TRIANGLES, 0, tree.information.numberOfcomponents);
+      gl.drawArrays(gl.TRIANGLES, 0, tree.info.numberOfcomponents);
     })
   }
 }
