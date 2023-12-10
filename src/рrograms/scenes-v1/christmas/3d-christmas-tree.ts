@@ -1,8 +1,9 @@
-import { mat4 } from "gl-matrix";
 import { createStaticVertexBuffer, createVAOForXYZ_RGBBuffer, drawVAO, glsl } from "../../../general/core-utils";
-import { radian } from "../../../math-utils";
 import { makeAxesLineVertexShape } from "../../../general/axes-shape";
 import { make3dChristmasTreeVertexShape } from "./shapes";
+import { ProjectionMatrix } from "../../../view/projection";
+import { ViewMatrix } from "../../../view/view";
+import { WorldMatrix } from "../../../view/world";
 
 const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
   precision mediump float;
@@ -20,7 +21,6 @@ const VERTEX_SHADER_SOURCE_CODE = glsl`#version 300 es
     fragmentColor = vertexColor;
 
     gl_Position = mProjection * mView * mWorld * vec4(vertexPosition, 1.0);
-    gl_PointSize = 15.0;
   }
 `;
 
@@ -58,9 +58,9 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   canvas.width = 800;
   canvas.height = 600;
 
-  const proj = makeProjection(canvas)
-  const view = makeView()
-  const world = makeWord()
+  const proj = new ProjectionMatrix(canvas.width / canvas.height)
+  const view = new ViewMatrix([0, 0, 3], [0, 0, 0])
+  const world = new WorldMatrix(WorldMatrix.IDENTITY)
 
 	let angle = 0;
 
@@ -72,56 +72,24 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
 
     gl.enable(gl.DEPTH_TEST)
 
-    angle = performance.now() / 1000 / 6 * 2 * Math.PI;
-    const rotationgWorld = makeRotationgWorld(angle)
+    // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+    // world.rotateY(angle)
 
-    gl.uniformMatrix4fv(GL_worldMatrix, false, world)
-    gl.uniformMatrix4fv(GL_viewMatrix, false, view)
-    gl.uniformMatrix4fv(GL_projectionMatrix, false, proj)
+    gl.uniformMatrix4fv(GL_worldMatrix, false, world.matrix)
+    gl.uniformMatrix4fv(GL_viewMatrix, false, view.matrix)
+    gl.uniformMatrix4fv(GL_projectionMatrix, false, proj.matrix)
 
     VAOs.forEach((v, i) => {
       const info = shape[i].info
       drawVAO(gl, v, info)
     })
   }
+  // return {
+  //   loop: Function,
+  //   drag: Function,
+  //   click: Function
+  // }
 }
-
-function makeProjection(canvas: HTMLCanvasElement) {
-  const proj = new Float32Array(16)
-  const ratio = canvas.width / canvas.height
-  mat4.perspective(proj, radian(90), ratio, 0.1, 1000.0);
-
-  return proj
-}
-
-function makeView() {
-  const view = new Float32Array(16)
-  mat4.lookAt(view, [0, 0, 3], [0, 0, 0], [0, 1, 0]);
-  return view
-}
-
-function makeWord() {
-  const world = new Float32Array(16)
-  mat4.identity(world);
-  return world
-}
-
-function makeRotationgWorld(angle: number) {
-  const world = new Float32Array(16)
-  mat4.identity(world);
-
-  const xRotationMatrix = new Float32Array(16);
-  const yRotationMatrix = new Float32Array(16);
-  const identityMatrix = new Float32Array(16);
-	mat4.identity(identityMatrix);
-
-  mat4.rotate(yRotationMatrix, identityMatrix, angle, [0, 1, 0]);
-  mat4.rotate(xRotationMatrix, identityMatrix, angle / 4, [1, 0, 0]);
-  mat4.mul(world, yRotationMatrix, xRotationMatrix);
-
-  return world
-}
-
 
 export default {
   VERTEX_SHADER_SOURCE_CODE,
