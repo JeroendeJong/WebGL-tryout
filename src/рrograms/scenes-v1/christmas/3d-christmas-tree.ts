@@ -55,14 +55,9 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     return createVAOForXYZ_RGBBuffer(gl, vertexBuffer, GL_vertexPosition, GL_vertexColor);
   })
 
-  canvas.width = 800;
-  canvas.height = 600;
-
   const proj = new ProjectionMatrix(canvas.width / canvas.height)
   const view = new ViewMatrix([0, 0, 3], [0, 0, 0])
   const world = new WorldMatrix(WorldMatrix.IDENTITY)
-
-	let angle = 0;
 
   return function loop() {
     gl.clearColor(0.08, 0.08, 0.08, 1.0);
@@ -71,9 +66,7 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
     gl.useProgram(program);
 
     gl.enable(gl.DEPTH_TEST)
-
-    // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
-    // world.rotateY(angle)
+    // world.rotateY(performance.now() / 1000 / 6 * 2 * Math.PI)
 
     gl.uniformMatrix4fv(GL_worldMatrix, false, world.matrix)
     gl.uniformMatrix4fv(GL_viewMatrix, false, view.matrix)
@@ -84,11 +77,6 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
       drawVAO(gl, v, info)
     })
   }
-  // return {
-  //   loop: Function,
-  //   drag: Function,
-  //   click: Function
-  // }
 }
 
 export default {

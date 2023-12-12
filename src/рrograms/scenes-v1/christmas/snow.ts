@@ -48,10 +48,6 @@ export function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   const view = withArray(mat3.identity)
 
   return function loop() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // gl.clearColor(0.08, 0.08, 0.08, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     gl.viewport(0, 0, canvas.width, canvas.height);

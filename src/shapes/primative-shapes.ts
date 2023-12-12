@@ -84,7 +84,7 @@ export function makePrimativeCylinder(options: CylinderShapeOptions): PrimativeS
     cylinder.push(...bottom, ...top)
   })
 
-  console.log(cylinder)
+
   return makePrimativeShape(cylinder, options);
 
   function toTopPoint(p: vector3): vector3 {

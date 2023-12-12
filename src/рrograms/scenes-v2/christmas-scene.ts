@@ -34,8 +34,6 @@ export const FRAGMENT_SHADER_SOURCE_CODE = glsl`#version 300 es
   }
 `;
 
-
-
 interface Uniforms {
   color: REGL.Vec4;
 }

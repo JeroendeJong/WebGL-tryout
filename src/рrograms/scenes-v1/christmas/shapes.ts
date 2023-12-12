@@ -4,7 +4,7 @@ import { makePrimativeCircle, makePrimativeCone, makePrimativeCylinder, makePrim
 import { makeComplexShape, makeVertexShape } from "../../../shapes/shape-creation"
 import { BasicShapeOptions } from "../../../shapes/types"
 
-export function make3dChristmasTreeVertexShape(): VertexShape[] {
+export function make3dChristmasTreeVertexShape(options?: BasicShapeOptions): VertexShape[] {
   const circleOptions = { segments: 20, length: 1.5 }
 
   const trunkVertex = makeTrunk()
@@ -39,7 +39,7 @@ export function make3dChristmasTreeVertexShape(): VertexShape[] {
     }
 
     const shapes = [ bottomCone, middleCone, topCone ]
-    const complexShape = makeComplexShape(shapes, FaceCull.BACK)
+    const complexShape = makeComplexShape(shapes, FaceCull.BACK, options)
     return makeVertexShape(complexShape, DrawType.TRIANGLE)
 
   }
@@ -70,7 +70,7 @@ export function make3dChristmasTreeVertexShape(): VertexShape[] {
     }
 
     const shapes = [ bottomLid, middleLid, topLid ]
-    const complexShape = makeComplexShape(shapes, undefined)
+    const complexShape = makeComplexShape(shapes, undefined, options)
     return makeVertexShape(complexShape, DrawType.TRIANGLE)
   }
 
@@ -91,7 +91,7 @@ export function make3dChristmasTreeVertexShape(): VertexShape[] {
       })
     }
 
-    const complexShape = makeComplexShape([trunk], undefined)
+    const complexShape = makeComplexShape([trunk], undefined, options)
     return makeVertexShape(complexShape, DrawType.TRIANGLE)
   }
 
@@ -112,7 +112,7 @@ export function make2dChristmasTreeVertexShape(options?: BasicShapeOptions): Ver
     primative: makePrimativeRectangle({
       transform: {
         scale: 0.1,
-        move: xyz(0, -8, 0)
+        move: xyz(0, -1, 0)
       }
     }),
   }
@@ -132,7 +132,7 @@ export function make2dChristmasTreeVertexShape(options?: BasicShapeOptions): Ver
     primative: makePrimativeTriangle({
       transform: {
         scale: 0.4,
-        move: xyz(0, 0, 0)
+        move: xyz(0, 0.1, 0)
       }
     }) 
   }

@@ -9,11 +9,7 @@ export const glsl = (x: any) => x;
  * @param fCode fragment source code
  * @returns gl and WebGLProgram Instance
  */
-export function initGL(vCode: string, fCode: string): WebGLInit {
-  const canvas = document.getElementById('canvas')
-  if (!canvas) throw new Error('no Canvas Element found')
-  if (!(canvas instanceof HTMLCanvasElement)) throw new Error('no Canvas Element found')
-
+export function initGL(canvas: HTMLCanvasElement, vCode: string, fCode: string): WebGLInit {
   const gl = getContext(canvas);
   const program = createProgram(gl, 
     createShader(gl, gl.VERTEX_SHADER, vCode), 

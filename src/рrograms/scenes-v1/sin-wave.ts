@@ -60,9 +60,6 @@ function makeLoop({gl, program}: WebGLInit): WebGLLoopFunction {
   let time = 0.0
 
   return function loop() {
-    canvas.width = 800;
-    canvas.height = 600;
-
     gl.clearColor(0.08, 0.08, 0.08, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.viewport(0, 0, canvas.width, canvas.height);
